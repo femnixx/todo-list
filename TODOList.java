@@ -74,7 +74,7 @@ public class TODOList {
         input.nextLine();  // Consume the leftover newline character
     
         if (editInput == -1) {
-            menu();;  // Return to the menu
+            menu();  // Return to the menu
         }
     
         if (editInput >= 1 && editInput <= list.size()) {
