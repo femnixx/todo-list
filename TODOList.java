@@ -1,12 +1,14 @@
+import java.io.File;
 import java.util.*;
 
 public class TODOList {
     static Scanner input = new Scanner(System.in);
-    static LinkedList list = new LinkedList<>();
+    static LinkedList<String> list = new LinkedList<>();
+
 
     // view function
     static void menu() {
-        System.out.print("Please pick a function to start: ");
+        System.out.println("Please pick a function to start: ");
         System.out.println("""
                 1. Add task
                 2. View Task
@@ -14,12 +16,13 @@ public class TODOList {
                 4. Edit Task
                 """);
         int pickTask = input.nextInt();
+        input.nextLine();
         switch (pickTask) {
             case 1:
                 addTask();
                 break;
             case 2:
-                // actually view task this time
+                viewTask();
                 break;
             case 3: 
                 removeTask();
@@ -39,20 +42,23 @@ public class TODOList {
         list.add(taskPlus);
         System.out.print("Type Y to either add again or anything else to quit: ");
         String addAgain = input.nextLine();
-        while (addAgain.equals(Y)) {
+        while (addAgain.equals("Y")) {
             addTask();
          }
-         return; //supposed to be menu in the future
+         menu(); 
      }
 
     // remove function 
     static void removeTask() {
         System.out.println("Task to remove (Type -1 to exit): ");
         int taskRemove = input.nextInt();
-        if (list.contains(taskRemove)) {
-            list.remove(i);
+        input.nextLine();
+        if (taskRemove >= 0 && taskRemove < list.size()) {
+            list.remove(taskRemove);
+            System.out.println("Successfully removed task.");
+            viewTask();
         } else if (taskRemove == -1) {
-            return;
+            menu();
         }
          else {
             System.out.println("Not found.");
@@ -63,27 +69,28 @@ public class TODOList {
     // edit task
     static void editTask() {
         viewTask();
-        System.out.println("Which would you like to edit? (Input a number based on the view task: ) ");
-        int  editInput = input.nextInt();
-        if (list.contains(editInput)) {
-            System.out.print("Input your new or editted task: ");
-            String taskEditted = input.nextLine();
-            list.set(list.get(editInput), taskEditted);
-        } else if (editInput = -1) {
-            return;
-            menu();
-            
+        System.out.println("Which would you like to edit? (Input a number based on the view task, or -1 to return to menu): ");
+        int editInput = input.nextInt();  // Get the task number to edit
+        input.nextLine();  // Consume the leftover newline character
+    
+        if (editInput == -1) {
+            menu();;  // Return to the menu
         }
-         else {
-            System.out.println("Input does not contain said index.");
-            editTask();
+    
+        if (editInput >= 1 && editInput <= list.size()) {
+            System.out.print("Input your new or edited task: ");
+            String taskEdited = input.nextLine();  // Get the new task description
+            list.set(editInput - 1, taskEdited);  // Update the task at the (editInput - 1) index
+            System.out.println("Task edited successfully.");
+        } else {
+            System.out.println("Invalid index. Please try again.");
         }
+        menu();  // Return to the menu after editing (or invalid input)
     }
-
     // view task
     static void viewTask() {
         System.out.println("Here are your current tasks.");
-        for (int i = 0; i < list.length; i++) {
+        for (int i = 0; i < list.size(); i++) {
             System.out.println((i+1) + ". " + list.get(i));
         }
     }
