@@ -90,6 +90,6 @@ public class TODOList {
 
     public static void main(String[] args) {
         System.out.println("TODO LIST");
-        viewTask();
+        menu();
     }
 }
